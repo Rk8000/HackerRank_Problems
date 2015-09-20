@@ -1,0 +1,101 @@
+/**
+ * The BoyerMoore class to implements pattern matching in the text using Boyer Moore algorithm
+ *
+ * @author  Ravi Kumar Singh
+ * @version 1.0
+ * @since   2015-04-06
+ */
+
+public class BoyerMoore {
+
+    public static void main(String[] args) {
+        String text = "I LIKE TECKYEME";
+        String pattern = "TECKY";
+        int[] lookup = new int[255];
+        fillingTheTable(pattern, lookup);
+        int position  = patternMatching(text, pattern, lookup);
+        //int pos = simplePatternMatching(text, pattern);
+        if( position!=-1) {
+            System.out.println("pattern is present at " + position);
+        }
+        else {
+            System.out.println("the Pattern is not present ");
+        }
+    }
+
+    /**
+     * simplePatternMatching is for finding the index of the matches using simple naive method of complexity O(n.m)
+     *
+     * @param text, pattern
+     */
+    private static int simplePatternMatching(String text, String pattern) {
+        int j=0;
+        for( int i =0; j< pattern.length() && i < text.length() ;i++){
+            if(text.charAt(i) == pattern.charAt(j)){
+                j++;
+                if( j == pattern.length()){
+                    return i - pattern.length()+1 ;
+                }
+            } else {
+                j=0;
+            }
+        }
+        return -1;
+    }
+
+    /**
+     * patternMatching is for finding the index of the matches using Boyer Moore algorithm, worst case O(n.m)
+     *
+     * @param text, pattern
+     */
+    private static int patternMatching(String text, String pattern, int[] lookup) {
+        int n = text.length();
+        int m = pattern.length();
+
+        int j = m-1;
+        int i = m-1;
+        if( j > n-1){
+            return -1;
+        }
+
+        do {
+            if( text.charAt(i)== pattern.charAt(j)){
+                if( j==0){
+                    return i;
+                }
+                else {
+                    j--;
+                    i--;
+                }
+            }
+            else {
+                if(lookup[(int)text.charAt(i)] == -1 || j < lookup[(int)text.charAt(i)] ){
+                    i = i + m;
+                }
+                else {
+                    i = i + j- lookup[(int)text.charAt(i)];
+                }
+                j = m-1;
+            }
+
+        } while (i <= n-1);
+
+        return -1;
+    }
+
+    /**
+     * fillingTheTable to fill the partial matching table
+     *
+     * @param pattern, lookup
+     * @return void
+     */
+    private static void fillingTheTable(String pattern, int[] lookup) {
+
+        for( int i = 0; i < lookup.length ;i++){
+            lookup[i] = -1;
+        }
+        for( int i = 0 ; i < pattern.length() ;i++){
+            lookup[pattern.charAt(i)] = i;
+        }
+    }
+}
