@@ -1,0 +1,24 @@
+import java.io.*;
+
+//Haollween party
+public class Solution2 {
+    public static void main(String[] args) throws IOException {
+        // reading the input from the STDIN
+        StringBuffer sb = new StringBuffer();
+        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+
+        // Running for all the inputs
+        for( byte noOfTestCases = Byte.parseByte(br.readLine()); noOfTestCases > 0; --noOfTestCases ){
+            int KCuts = Integer.parseInt(br.readLine());
+            //no of horizontal cuts
+            int horizontalCuts = KCuts/2;
+            // no of Vertical cuts
+            int verticalCuts = KCuts - horizontalCuts;
+            // total number of pieces
+            long numPieces = 1L * horizontalCuts * verticalCuts;
+            sb.append(numPieces + "\n");
+        }
+        // Printing the buffer
+        System.out.print(sb);
+    }
+}
