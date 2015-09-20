@@ -1,0 +1,108 @@
+import java.util.Scanner;
+
+/**
+ * Created by ravikumarsingh on 8/25/15.
+ */
+public class Solution {
+
+    private static void rotateMatrix(int m, int n, int[][] squareArray) {
+        int row = 0, col = 0;
+        int lastValue, currentValue;
+
+        while (row < m && col < n) {
+            // Edge conditions
+            if ( row + 1 == m || col + 1 == n ) {
+                break;
+            }
+
+            // Storing the first element of the next row
+            lastValue = squareArray[row + 1][col];
+
+		    // Shifting the current row's element to one place in right and storing the prev as first element
+            for ( int i = col; i < n; i++ ) {
+                currentValue = squareArray[row][i];
+                squareArray[row][i] = lastValue;
+                lastValue = currentValue;
+            }
+            row++;
+
+            // Shifting the last column's element to one place in down and storing the prev as first element
+            for ( int i = row; i < m; i++ ) {
+                currentValue = squareArray[i][n-1];
+                squareArray[i][n-1] = lastValue;
+                lastValue = currentValue;
+            }
+            n--;
+
+            // Shifting the last row's element to one place in left and storing the prev as first element
+            if (row < m) {
+                for ( int i = n-1; i >= col; i-- ) {
+                    currentValue = squareArray[m-1][i];
+                    squareArray[m-1][i] = lastValue;
+                    lastValue = currentValue;
+                }
+            }
+            m--;
+
+            // Shifting the first column's element to one place in up and storing the prev as first element
+            if (col < n) {
+                for ( int i = m-1; i >= row; i-- ) {
+                    currentValue = squareArray[i][col];
+                    squareArray[i][col] = lastValue;
+                    lastValue = currentValue;
+                }
+            }
+            col++;
+
+
+        }
+    }
+
+    private static void printSquareArray(int[][] squareArray) {
+        // Printing rotated square Array
+        for ( int i = 0; i < squareArray.length ; i++ ) {
+            System.out.println();
+            for ( int j = 0; j < squareArray[i].length ; j++ ) {
+                System.out.print( squareArray[i][j] + " ");
+            }
+        }
+    }
+
+    public static void main(String[] args) {
+        // Reading STDIN
+        Scanner sc = new Scanner(System.in);
+        int rows = sc.nextInt();
+
+        // initializing the arrays
+        int[][] squareArray = new int[rows][rows];
+        sc.nextLine();
+
+        // Filling the 2-D Array
+        for( int i = 0 ; i < rows ; i++ ) {
+            String[] eachLine = sc.nextLine().split(" ");
+            int[] lineToArray = new int[eachLine.length];
+
+            for( int j = 0 ; j < lineToArray.length ; j++ ) {
+                lineToArray[j] = Integer.parseInt( eachLine[j] );
+            }
+
+            for( int k = 0 ; k < lineToArray.length ; k++ ){
+                // Not an square matrix
+                if( k >= rows ) {
+                    System.out.println("ERROR");
+                    return;
+                }
+                // Square matrix
+                else {
+                    squareArray[i][k] = lineToArray[k];
+                }
+            }
+        }
+
+        // Function to rotate the 2-D array
+        rotateMatrix(squareArray.length, squareArray.length, squareArray);
+
+        // Function to print the 2-D array
+        printSquareArray(squareArray);
+    }
+}
