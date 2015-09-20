@@ -1,0 +1,35 @@
+import java.util.Scanner;
+// Love letter mystery
+public class Solution3{
+    public static void main(String[] args){
+
+        // reading the input from the STDIN
+        Scanner reader = new Scanner(System.in);
+        int noOfTestCases = reader.nextInt();
+        int count = 0;
+
+        for( int i = 0 ; i < noOfTestCases ; i++ ) {
+            count = 0;
+            int index = 0;
+            String word = reader.next();
+            // creating the char array
+            char[] word_letters = word.toCharArray();
+
+            int length = word_letters.length-1;
+
+            while( index < length ) {
+                // checking the character are not same
+                if( word_letters[index]!= word_letters[length] ) {
+                    // finding the difference and incrementing the count
+                    int difference = Math.abs(word_letters[index]-word_letters[length]);
+                    count = count + difference;
+                }
+                // incrementing index and length
+                index++;
+                length--;
+            }
+            // printing the count
+            System.out.println(count);
+        }
+    }
+}
