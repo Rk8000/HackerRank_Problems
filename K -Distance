@@ -1,0 +1,72 @@
+import java.util.Scanner;
+import java.util.*;
+/**
+ * Created by ravikumarsingh on 8/25/15.
+ */
+public class Solution1 {
+
+    public static void main(String[] args) {
+        // Reading STDIN
+        Scanner sc = new Scanner(System.in);
+        int rows = sc.nextInt();
+
+        // initializing the arrays
+        int[][] squareArray = new int[rows][];
+        int[] anotherArray = new int[0];
+        sc.nextLine();
+
+        // Filling the 2-D Array
+        for( int i = 0 ; i < rows ; i++ ) {
+            String[] eachLine = sc.nextLine().split(" ");
+            anotherArray = new int[rows * eachLine.length];
+            int[] lineToArray = new int[eachLine.length];
+
+            for( int j = 0 ; j < lineToArray.length ; j++ ) {
+                lineToArray[j] = Integer.parseInt( eachLine[j] );
+            }
+
+            squareArray[i] = new int[eachLine.length];
+
+            for( int k = 0 ; k < squareArray[i].length ; k++ ){
+                squareArray[i][k] = lineToArray[k];
+            }
+        }
+
+        // Storing all elements of 2 D array into anther 1D array
+        int k =0;
+        for( int i=0; i < squareArray.length ;i++){
+            for( int j =0; j < squareArray[i].length;j++, k++){
+                anotherArray[k] = squareArray[i][j];
+            }
+        }
+        int distance = sc.nextInt();
+
+        // Function to check the duplicates
+        if(duplicateMatrix(anotherArray, distance)){
+            System.out.println("YES");
+        }
+        else {
+            System.out.println("NO");
+        }
+    }
+
+
+    static boolean duplicateMatrix(int[] arr, int k) {
+        // Creating an empty HashSet and check the duplicate values within K indices
+        HashSet<Integer> set = new HashSet<Integer>();
+
+        for (int i=0; i<arr.length; i++) {
+            // If the element is already present, then return true
+
+            if (set.contains(arr[i])) {
+                return true;
+            }
+            // adding the element
+            set.add(arr[i]);
+            // Remove the k+10 distant item
+            if (i > k+10)
+                set.remove(arr[i-k-9]);
+        }
+        return false;
+    }
+}
