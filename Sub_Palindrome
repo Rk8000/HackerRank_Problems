@@ -1,0 +1,85 @@
+#include <map>
+#include <set>
+#include <list>
+#include <cmath>
+#include <ctime>
+#include <climits>
+#include <deque>
+#include <queue>
+#include <stack>
+#include <bitset>
+#include <cstdio>
+#include <limits>
+#include <vector>
+#include <cstdlib>
+#include <fstream>
+#include <numeric>
+#include <sstream>
+#include <iostream>
+#include <algorithm>
+using namespace std;
+
+/*
+ * Complete the function below.
+ */
+int palindrome(string str) {
+        // Creating a map Of String and size
+        map<string, int> mapOfString;
+
+        int size = str.size();
+		// Result tables	
+        int resultTable[2][size+1];
+
+        // Find all sub-string 
+        str = "!" + str + "?";
+
+        for ( int j = 0; j <= 1; j++ )
+        {
+                int length = 0;   // length of 'palindrome radius'
+                resultTable[j][0] = 0;
+                int i = 1;
+                while (i <= size){
+                        while (str[i - length - 1] == str[i + j + length]){
+                                length++;
+                        }
+                        resultTable[j][i] = length;
+                        int k = 1;
+                        while ((resultTable[j][i - k] != length - k) && (k < length)){
+                                resultTable[j][i + k] = min(resultTable[j][i - k],length - k);
+                                k++;
+                        }
+                        length = max(length - k,0);
+                        i += k;
+                }
+        }
+        str = str.substr(1, size);
+
+        // Finding unique palindrome 
+        mapOfString[string(1, str[0])]=1;
+        for (int i = 1; i <= size; i++){
+                for (int j = 0; j <= 1; j++){
+                        for(int length=resultTable[j][i]; length > 0; length--){
+                                mapOfString[str.substr(i-length-1,2*length+j)]=1;
+                        }
+                        mapOfString[string(1,str[i])]=1;
+                }
+        }
+
+        // returning all distinct palindrome
+        int countOfSubStrings = mapOfString.size()-1;
+        return countOfSubStrings;
+}
+
+int main() {
+    ofstream fout(getenv("OUTPUT_PATH"));
+    int res;
+    string _str;
+    getline(cin, _str);
+    
+    res = palindrome(_str);
+    fout << res << endl;
+    
+    fout.close();
+    return 0;
+}
+
