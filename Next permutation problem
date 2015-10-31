@@ -1,0 +1,60 @@
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+
+/**
+ * Created by ravikumarsingh on 10/29/15.
+ */
+public class nextPermutation {
+    public static void main(String[] args) throws IOException {
+        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+        int numberOfTestCase = Integer.parseInt(br.readLine());
+
+        while( numberOfTestCase > 0 ){
+            char[] nextLine = br.readLine().toCharArray();
+            StringBuilder sb = new StringBuilder();
+
+            // finding the longest non-increasing suffix
+            int i = nextLine.length - 1;
+            while ( i > 0 && (int)nextLine[i-1] >= (int)nextLine[i] ){
+                i--;
+            }
+            // if the current is the longest then printing that
+            if( i <= 0){
+                for( int k =0 ; k < nextLine.length ;k++ ) {
+                    sb.append(nextLine[k]);
+                }
+                System.out.println(sb.toString());
+            }
+            // else
+            else {
+                // finding the rightmost element which is greater than pivot
+                int j = nextLine.length - 1;
+
+                while ((int) nextLine[i - 1] >= (int) nextLine[j]) {
+                    j--;
+                }
+                // swaping the pivot with the rightmost highest element
+                char temp = nextLine[i - 1];
+                nextLine[i - 1] = nextLine[j];
+                nextLine[j] = temp;
+
+                j = nextLine.length - 1;
+                // reversing the entire suffix
+                while (i < j) {
+                    temp = nextLine[i];
+                    nextLine[i] = nextLine[j];
+                    nextLine[j] = temp;
+                    i++;
+                    j--;
+                }
+                // printing the next permutation
+                for( int k =0 ; k < nextLine.length ;k++ ) {
+                    sb.append(nextLine[k]);
+                }
+                System.out.println(sb.toString());
+            }
+            numberOfTestCase--;
+        }
+    }
+}
